@@ -89,7 +89,7 @@ No protection against brute-force attacks, bots, or malicious inputs.
 
 ---
 
-### 4. Application Autoscaling with KEDA
+### 4. Application Autoscaling
 
 **Current Limitation:**  
 Application pods run at fixed capacity, inefficient under varying load.
@@ -132,10 +132,7 @@ Deployments are manual and error-prone.
 
 **Proposed Improvement:**
 - Use GitOps principles with [ArgoCD](https://argo-cd.readthedocs.io) for declarative deployments.
-- Integrate with CI/CD tools (e.g., GitHub Actions, GitLab CI):
-  - Run tests.
-  - Build and push Docker images.
-  - Promote across environments automatically.
+- Integrate with CI/CD tools (e.g., GitHub Actions, GitLab CI).
 
 ---
 
@@ -146,7 +143,7 @@ Lack of structured observability and fault detection.
 
 **Proposed Improvement:**
 - Add Kubernetes readiness and liveness probes.
-- Integrate with Prometheus and Grafana for monitoring and dashboards.
-- Use Fluent Bit, Loki, or the ELK stack for centralized logging and alerting.
+- Monitoring and dashboards.
+- Centralized logging and alerting.
 
 ---
