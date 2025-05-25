@@ -28,6 +28,7 @@ Deploy ingress and app
 
 ```shell
 # Deploy ingress and app via helm
+# Update image.repository if changed DOCKER_REGISTRY in Part 1.
 make helm_all
 ```
 
