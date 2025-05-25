@@ -46,62 +46,107 @@ make helm_all
 make helm_uninstall
 ```
 
-## Part 3
-1. Query Caching to Avoid API Quota Overuse
-Current Limitation: Each request to the web service triggers an external API call, consuming API quota.
+## Part3
 
-Improvement:
-Implement a caching layer (e.g., Redis or in-memory) to store API responses for repeated requests.
-Use TTL (time-to-live) strategy to ensure data freshness while avoiding redundant calls.
+This document outlines the key areas for improvement in the application, focusing on performance, security, scalability, and maintainability.
 
-2. Authentication Layer for Security
-Current Limitation: The application lacks an authentication mechanism, making it publicly accessible.
+---
 
-Improvement:
-Add JWT-based or API key-based authentication for service endpoints.
-Integrate with OAuth2 or OIDC for secure user access (if applicable).
+### 1. Query Caching to Avoid API Quota Overuse
 
-3. Web Application Firewall (WAF) and Rate Limiting
-Current Limitation: The application is vulnerable to brute force, bots, and malicious payloads.
+**Current Limitation:**  
+Every request triggers an external API call, quickly consuming the API quota.
 
-Improvement:
-Use AWS WAF or ingress-nginx WAF rules to:
-Rate limit requests
-Block/allow by IP/geo
-Enforce body size limits and header checks
+**Proposed Improvement:**
+- Implement a caching layer (e.g., Redis or in-memory cache).
+- Use TTL (Time-To-Live) to balance freshness and efficiency.
+- Avoid redundant API calls for repeated queries.
 
-4. Application Autoscaling with KEDA
-Current Limitation: App runs at static capacity, under-utilizing or over-consuming resources.
+---
 
-Improvement:
-Integrate KEDA with a metrics provider (e.g., Prometheus, custom metrics)
-Enable horizontal pod autoscaling based on actual demand (e.g., queue depth, HTTP traffic, CPU/memory)
+### 2. Authentication Layer for Security
 
-5. Secure API Key Management
-Current Limitation: API keys are stored in environment variables or source code.
+**Current Limitation:**  
+The application lacks authentication, exposing it to unauthorized access.
 
-Improvement:
-Use External Secrets Operator with a backend like AWS Secrets Manager or HashiCorp Vault.
-Automate secret syncing with Kubernetes to keep secrets secure and centrally managed.
+**Proposed Improvement:**
+- Implement JWT-based or API key-based authentication.
+- Optionally integrate with OAuth2 or OIDC for user identity federation.
+- Secure service endpoints with proper access control.
 
-6. Automated DNS & TLS Certificate Management
-Current Limitation: Manual configuration of DNS records and SSL certificates.
+---
 
-Improvement:
-Use external-dns for dynamic DNS record management (e.g., Route53)
-Use cert-manager to auto-provision and renew Let's Encrypt TLS certificates.
+### 3. Web Application Firewall (WAF) and Rate Limiting
 
-7. CI/CD and GitOps Deployment
-Current Limitation: Manual deployments or scripts with potential human error.
+**Current Limitation:**  
+No protection against brute-force attacks, bots, or malicious inputs.
 
-Improvement:
-Use GitOps (ArgoCD) for declarative deployment pipelines.
-Integrate with CI/CD tools (GitHub Actions, GitLab CI, etc.) to automate testing, image builds, and environment promotion.
+**Proposed Improvement:**
+- Use AWS WAF or ingress-nginx WAF rules to:
+  - Apply rate limiting.
+  - Allow/block traffic by IP or geo-location.
+  - Enforce body size and header validation rules.
 
-8. Monitoring, Health Checks, and Logging
-Current Limitation: No structured monitoring or alerting in place.
+---
 
-Improvement:
-Add readiness/liveness probes to deployments for better fault detection.
-Integrate with Prometheus + Grafana for metrics monitoring.
-Use a log collector (e.g., Fluent Bit + Loki or ELK Stack) to centralize application logs for observability.
+### 4. Application Autoscaling with KEDA
+
+**Current Limitation:**  
+Application pods run at fixed capacity, inefficient under varying load.
+
+**Proposed Improvement:**
+- Integrate [KEDA](https://keda.sh) for event-driven autoscaling.
+- Use Prometheus or custom metrics (e.g., queue depth, HTTP requests) as scaling triggers.
+- Optimize resource utilization through horizontal pod autoscaling.
+
+---
+
+### 5. Secure API Key Management
+
+**Current Limitation:**  
+Sensitive keys are stored in plain environment variables or source code.
+
+**Proposed Improvement:**
+- Use [External Secrets Operator](https://external-secrets.io/) with a backend like:
+  - AWS Secrets Manager
+  - HashiCorp Vault
+- Automatically sync secrets into Kubernetes securely.
+
+---
+
+### 6. Automated DNS & TLS Certificate Management
+
+**Current Limitation:**  
+DNS records and SSL certificates require manual updates.
+
+**Proposed Improvement:**
+- Use [external-dns](https://github.com/kubernetes-sigs/external-dns) for automated DNS management (e.g., Route 53).
+- Use [cert-manager](https://cert-manager.io) to automate TLS certificate issuance and renewal.
+
+---
+
+### 7. CI/CD and GitOps Deployment
+
+**Current Limitation:**  
+Deployments are manual and error-prone.
+
+**Proposed Improvement:**
+- Use GitOps principles with [ArgoCD](https://argo-cd.readthedocs.io) for declarative deployments.
+- Integrate with CI/CD tools (e.g., GitHub Actions, GitLab CI):
+  - Run tests.
+  - Build and push Docker images.
+  - Promote across environments automatically.
+
+---
+
+### 8. Monitoring, Health Checks, and Logging
+
+**Current Limitation:**  
+Lack of structured observability and fault detection.
+
+**Proposed Improvement:**
+- Add Kubernetes readiness and liveness probes.
+- Integrate with Prometheus and Grafana for monitoring and dashboards.
+- Use Fluent Bit, Loki, or the ELK stack for centralized logging and alerting.
+
+---
