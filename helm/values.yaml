@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: le0exxx/ping-tasks-webservice
+  tag: 0.1.1
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: ping-tasks-webservice.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+env:
+  SYMBOL: "MSFT"
+  NDAYS: "7"
+
+secretEnv:
+  APIKEY: "C227WD9W3LUVKVV9"
