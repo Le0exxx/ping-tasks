@@ -34,12 +34,12 @@ make helm_all
 
 ```shell
 # Open minikube tunnel
- minikube tunnel
+minikube tunnel
 ```
 
 ```shell
 # Get the Prices
- curl -H "Host: ping-tasks-webservice.local" http://127.0.0.1/rabbit
+curl -H "Host: ping-tasks-webservice.local" http://127.0.0.1/rabbit
 ```
 
 ```shell
