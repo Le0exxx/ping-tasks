@@ -13,7 +13,7 @@ Src code and image build
 
 ```shell
 # Build and pulish image
-# Pass DOCKER_REGISTRY and TAG environment variables if needed
+# Pass DOCKER_REGISTRY environment variables to use your own Docker Registry
 # Image already in https://hub.docker.com/repository/docker/le0exxx/ping-tasks-webservice/general
 
 make build_all
